@@ -6,4 +6,4 @@ RUN apt-get update && apt-get install -y \
     openssh-client \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --no-cache-dir --break-system-packages ansible-core pytest testinfra
+RUN pip3 install --no-cache-dir --break-system-packages ansible-core pytest pytest-testinfra
