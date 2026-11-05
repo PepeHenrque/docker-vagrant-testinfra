@@ -29,5 +29,5 @@ def test_pagina_inicial(host):
 
 def test_conteudo_html(host):
     pagina = host.file("/var/www/html/index.html")
-    assert "Grupo X - Testinfra Lab" in pagina.content_string
+    assert "Grupo 9 - Testinfra Lab" in pagina.content_string
     assert "Servidor provisionado com Ansible" in pagina.content_string
