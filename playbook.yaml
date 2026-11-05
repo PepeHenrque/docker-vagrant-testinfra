@@ -1,0 +1,56 @@
+---
+- name: Configurar servidor web Apache na VM
+  hosts: web
+  become: true
+  vars:
+    pagina_titulo: "Grupo X - Testinfra Lab"
+
+  tasks:
+    - name: Atualizar cache e pacotes
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+        upgrade: safe
+
+    - name: Instalar Apache
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+
+    - name: Esconder versao do Apache nas respostas
+      ansible.builtin.lineinfile:
+        path: /etc/apache2/conf-available/security.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: "^ServerTokens", line: "ServerTokens Prod" }
+        - { regexp: "^ServerSignature", line: "ServerSignature Off" }
+      notify: Reiniciar Apache
+
+    - name: Iniciar Apache e habilitar no boot
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: true
+
+    - name: Criar pagina HTML
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: "0644"
+        content: |
+          <!DOCTYPE html>
+          <html lang="pt-BR">
+          <head><meta charset="UTF-8"><title>{{ pagina_titulo }}</title></head>
+          <body>
+            <h1>{{ pagina_titulo }}</h1>
+            <p>Servidor provisionado com Ansible e validado com Testinfra.</p>
+          </body>
+          </html>
+
+  handlers:
+    - name: Reiniciar Apache
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
