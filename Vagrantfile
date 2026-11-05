@@ -1,4 +1,4 @@
-# Vagrantfile – fase 2 (local only)
+# Vagrantfile – fase 2 (root)
 Vagrant.configure('2') do |config|
   # ---- VM base -------------------------------------------------
   config.vm.box = 'ubuntu/focal64'
@@ -6,7 +6,7 @@ Vagrant.configure('2') do |config|
 
   # ---- Rede ----------------------------------------------------
   config.vm.network 'forwarded_port', guest: 80, host: 8080
-config.vm.network 'forwarded_port', guest: 22, host: 2222, host_ip: "0.0.0.0"
+  config.vm.network 'forwarded_port', guest: 22, host: 2222, host_ip: "0.0.0.0"
 
   # ---- Pastas compartilhadas ------------------------------------
   config.vm.synced_folder './', '/vagrant'
@@ -22,5 +22,5 @@ config.vm.network 'forwarded_port', guest: 22, host: 2222, host_ip: "0.0.0.0"
   end
 
   # ---- Provisionamento adicional (shell) -----------------------
-  config.vm.provision 'shell', path: 'vagrant/bootstrap.sh'
+  config.vm.provision 'shell', path: 'bootstrap.sh'
 end
