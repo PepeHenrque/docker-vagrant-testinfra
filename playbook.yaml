@@ -3,7 +3,7 @@
   hosts: web
   become: true
   vars:
-    pagina_titulo: "Grupo X - Testinfra Lab"
+    pagina_titulo: "Grupo 9 - Testinfra Lab"
 
   tasks:
     - name: Atualizar cache e pacotes
